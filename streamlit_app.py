@@ -1,30 +1,13 @@
-import streamlit as st
-import os
-from openai import OpenAI
-
-st.set_page_config(page_title="LLM Project", layout="centered")
-
 st.title("🤖 LLM Project")
-st.write("Enter a prompt and get an AI response.")
 
-# Create OpenAI client using Streamlit Secrets
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
+# Streamlit text input instead of input()
 prompt = st.text_input("Enter your prompt")
 
 if st.button("Generate"):
-    if prompt.strip():
+    if prompt.strip():  # ensure input is not empty
         with st.spinner("Thinking..."):
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}]
-            )
-            st.success("Response")
-            st.write(response.choices[0].message.content)
+            result = get_llm_response(prompt)
+            st.write(result)
     else:
         st.warning("Please enter a prompt")
-
-
-
-
 
